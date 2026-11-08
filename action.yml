@@ -1,0 +1,27 @@
+name: 'ObsidianScrub CMMC 2.0 & Section 889 Supply-Chain Scanner'
+description: 'Automated DoD NIST SP 800-171 (110-Control) SPRS Score, NDAA Section 889 Supply-Chain, and CUI/Secret Leakage CI Gate'
+author: 'Harris Legacy Venturez LLC (CAGE: 9YGC1)'
+branding:
+  icon: 'shield'
+  color: 'blue'
+inputs:
+  fail_on_secret:
+    description: 'Fail CI workflow if live secrets or CUI markings are detected'
+    required: false
+    default: 'true'
+  api_key:
+    description: 'Optional ObsidianScrub Enterprise API Key for deep 110-control SSP/POA&M artifact generation'
+    required: false
+    default: ''
+outputs:
+  sprs_score:
+    description: 'Computed NIST SP 800-171 Rev 2 SPRS Score (-203 to +110)'
+  section889_status:
+    description: 'NDAA FY2026 Section 889 Part A/B Supply-Chain Compliance Verdict'
+runs:
+  using: 'composite'
+  steps:
+    - name: Run ObsidianScrub CMMC 2.0 & Section 889 CI Audit
+      shell: bash
+      run: |
+        python3 ${{ github.action_path }}/scanner.py
